@@ -1,4 +1,4 @@
-# Speech-Transmission-Index-STI-
+# Speech-Transmission-Index-STI
 Matlab implementation of STI (Full STI, STIPA, direct and indirect approaches, correction factors)
 
 **Speech Transmission Index (STI)** ([STI](https://en.wikipedia.org/wiki/Speech_transmission_index))
@@ -40,23 +40,106 @@ This MATLAB project provides an open-source implementation of STI methods based 
 
 ## Structure of the Repository
 The repository is organized into MATLAB scripts, functions, and data files, with a dedicated folder for measurement data:
-+ **Root Directory**: Contains the main analysis functions, scripts, and supporting utilities:
-  + **STI computation functions**: <code>fullsti.m</code> (computes Full STI from a recorded signal), <code>stipa.m</code> (computes STI from a STIPA test signal recording), and <code>sti_ir.m</code> (computes STI from an impulse response). These are the core algorithms implementing the STI calculations for each method.
-  + **Signal generation**: <code>generateFullSTISignal.m</code> and <code>generateStipaSignal.m</code> create the test signals for Full STI and STIPA respectively. These functions follow the standard modulation specifications to output a waveform that can be played over a loudspeaker for measurement or used in simulations.
-  + **Demonstration scripts**: <code>demonstration_fullsti.m</code>, <code>demonstration_stipa.m</code>, <code>demonstration_sti_ir.m</code> illustrate how to use the above functions. Users can run these scripts in MATLAB to see example workflows (generating signals, reading measurement files, computing STI, and displaying results). Each script is documented with steps for clarity.
-  + **Utilities**:
-    + <code>octave_band_analysis.m</code> - filters an input signal or IR into the 7 octave bands and computes relevant band-level metrics (e.g., RMS levels or modulation indices in each band).
-    + <code>addSilenceGaps.m</code> - inserts silent intervals into a signal (e.g., between bursts of noise). This can be useful for formatting test signals or separating sections in a composite signal.
-    + <code>convolution.m</code> - performs convolution of two signals (used for applying an impulse response to a test signal, if simulating a transmission through an acoustic channel within MATLAB).
-    + Plotting and display helpers: <code>displayPlotSTI.m</code>, <code>displayTableSTI.m</code> (for results visualization), <code>plotIRVisualization.m</code> (for plotting impulse response characteristics), and <code>plotSignalWaveform.m</code> (for plotting audio waveforms).
-  + **Test data files**: Example data is provided to facilitate quick testing:
-    +  <code>stipa_test_signal.wav</code> - an example STIPA test signal (generated noise with proper modulation). This can be used for quick experiments or played back for measurement. Users can also generate a fresh one using <code>generateStipaSignal.m</code>.
-    +  <code>stipaMeasurement.wav</code> - an example recorded STIPA signal captured during the measurement campaign (playing the STIPA test signal through a system and recording at a listener position). This file allows users to try out the <code>stipa.m</code> analysis without needing to immediately perform their own recording.
-    +  <code>calibrator94dB.wav</code> - a calibration tone (1 kHz sine at 94 dB SPL). This short recording is used to calibrate measurement equipment or verify that the analysis correctly interprets levels. Playing and recording this file in a measurement setup should register as 94 dB in the analysis, ensuring correct level calibration for STI calculations.
++ **STI computation functions**: <code>fullsti.m</code> (computes Full STI from a recorded signal), <code>stipa.m</code> (computes STI from a STIPA test signal recording), and <code>sti_ir.m</code> (computes STI from an impulse response). These are the core algorithms implementing the STI calculations for each method.
++ **Signal generation**: <code>generateFullSTISignal.m</code> and <code>generateStipaSignal.m</code> create the test signals for Full STI and STIPA respectively. These functions follow the standard modulation specifications to output a waveform that can be played over a loudspeaker for measurement or used in simulations.
++ **Demonstration scripts**: <code>demonstration_fullsti.m</code>, <code>demonstration_stipa.m</code>, <code>demonstration_sti_ir.m</code> illustrate how to use the above functions. Users can run these scripts in MATLAB to see example workflows (generating signals, reading measurement files, computing STI, and displaying results). Each script is documented with steps for clarity.
++ **Utilities**:
+  + <code>octave_band_analysis.m</code> - filters an input signal or IR into the 7 octave bands and computes relevant band-level metrics (e.g., RMS levels or modulation indices in each band).
+  + <code>addSilenceGaps.m</code> - inserts silent intervals into a signal (e.g., between bursts of noise). This can be useful for formatting test signals or separating sections in a composite signal.
+  + <code>convolution.m</code> - performs convolution of two signals (used for applying an impulse response to a test signal, if simulating a transmission through an acoustic channel within MATLAB).
+  + Plotting and display helpers: <code>displayPlotSTI.m</code>, <code>displayTableSTI.m</code> (for results visualization), <code>plotIRVisualization.m</code> (for plotting impulse response characteristics), and <code>plotSignalWaveform.m</code> (for plotting audio waveforms).
++ **Test data files**: Example data is provided to facilitate quick testing:
+  +  <code>stipa_test_signal.wav</code> - an example STIPA test signal (generated noise with proper modulation). This can be used for quick experiments or played back for measurement. Users can also generate a fresh one using <code>generateStipaSignal.m</code>.
+  +  <code>stipaMeasurement.wav</code> - an example recorded STIPA signal captured during the measurement campaign (playing the STIPA test signal through a system and recording at a listener position). This file allows users to try out the <code>stipa.m</code> analysis without needing to immediately perform their own recording.
+  +  <code>calibrator94dB.wav</code> - a calibration tone (1 kHz sine at 94 dB SPL). This short recording is used to calibrate measurement equipment or verify that the analysis correctly interprets levels. Playing and recording this file in a measurement setup should register as 94 dB in the analysis, ensuring correct level calibration for STI calculations.
 
-## Usage Instructions
+## Usage
 
-**Prerequisites**: To use this repository, you need MATLAB (the code was developed and tested in MATLAB R2024b). No specialized toolboxes are strictly required for basic functionality – the code uses standard MATLAB functions for signal processing (octave-band filtering is implemented manually in <code>ctave_band_analysis.m</code>). However, having the Signal Processing Toolbox or Audio Toolbox may be beneficial for audio I/O and visualization but is not mandatory. Ensure your MATLAB path includes the repository files (you can achieve this by running <code>addpath(genpath('<path-to-repo>'))</code> or by opening MATLAB in the repository folder).
+**Prerequisites**: To use this repository, you need MATLAB (the code was developed and tested in MATLAB R2024b). No specialized toolboxes are strictly required for basic functionality – the code uses standard MATLAB functions for signal processing (octave-band filtering is implemented manually in <code>octave_band_analysis.m</code>). However, having the Signal Processing Toolbox or Audio Toolbox may be beneficial for audio I/O and visualization but is not mandatory. Ensure your MATLAB path includes the repository files (you can achieve this by running <code>addpath(genpath('<path-to-repo>'))</code> or by opening MATLAB in the repository folder).
+
+### STIPA Direct Method
+
+The STIPA test signal can be generated using
+
+```matlab
+signal = generateStipaSignal(duration);
+```
+where `duration` specifies the duration of test signal in seconds. 
+
+If no sampling frequency is specified, the default value of 96&nbsp;kHz is used.
+To specify the sampling frequency, just call the function with the second parameter `fs` with the value of sampling frequency in Hz.
+The minimum sampling frequency is 22,050&nbsp;Hz.
+
+```matlab
+signal = generateStipaSignal(duration, fs);
+```
+
+If you want to view the generater signal waveform, use
+
+```matlab
+signal = generateStipaSignal(duration, fs, 'doPlot', 1);
+```
+
+The generated test signal can be saved as audio file using the 
+[`audiowrite`](https://www.mathworks.com/help/matlab/ref/audiowrite.html)
+function, e.g.:
+
+```matlab
+audiowrite('./testSignal.wav', signal, fs);
+```
+
+Since STIPA evaluates the quality of speech transmission system based on the modulation depths of the measured signal, only the vector of measured `signal` and its sampling frequency `fs` is required to compute the STI value:
+
+```matlab
+STI = stipa(signal, fs);
+```
+
+Note that the sampling frequency `fs` may differ from the sampling frequency of the generated STIPA test signal according to the recording device used.
+
+Apart from the STI, the `stipa` function can also output the Modulation transfer ratios `mk`:
+
+```matlab
+[STI, mk] = stipa(signal, fs);
+```
+
+In special cases, the `stipa` function allows to input also `reference` signal and the Modulation Transfer values are computed as a ratio of `reference` and `signal` modulation depths:
+
+```matlab
+STI = stipa(signal, fs, reference);
+```
+
+and it is also possible to specify sampling frequency of reference signal `fsRef` if it differs from the sampling frequency of the measured `signal`:
+
+```matlab
+STI = stipa(signal, fs, reference, fsRef);
+```
+
+Two additional optional name-value arguments, `Lsk` and `Lnk`, can be provided to adjust the STI calculation for auditory masking and threshold effects, and ambient noise. 
+Both `Lsk` and `Lnk` should be vectors of length 7, representing the levels of signal and ambient noise in each frequency band, respectively.
+
+To adjust the Modulation Transfer Function (MTF) computation for auditory masking and threshold effects, use:
+```matlab
+STI = stipa(signal, fs, 'Lsk', Lsk);
+```
+
+To also account for the effect of ambient noise, use:
+```matlab
+STI = stipa(signal, fs, 'Lsk', Lsk, 'Lnk', Lnk);
+```
+
+By default, the `stipa` function uses automatic STIPA signal detection using a threshold energy level. However, you can specify the start of the signal using
+
+```matlab
+STI = stipa(signal, fs, 'SignalStart', signalstart);
+```
+
+Where `signalstart` specifies the start of test signal in the `signal` in seconds.
+
+If you want to view graphical output of the results and/or MTF matrix in a table, use
+
+```matlab
+STI = stipa(signal, fs, 'doPlot', 1, 'doTable', 1);
+```
 
 **Running a Basic STIPA Analysis**: A simple way to get started is to run the provided STIPA demonstration:
 1. Launch MATLAB and navigate to the repository folder.
@@ -68,12 +151,212 @@ The repository is organized into MATLAB scripts, functions, and data files, with
   + The script will output a final STI score in the MATLAB console and possibly open figures illustrating the intelligibility per frequency band.
 3. Review the console output and plots. For example, you might see a plot of 14 modulation indices across 7 bands and a printed table of STI contributions per band, culminating in the overall STI rating (e.g., _STI = 0.65 (Good)_).
 
+### Full STI Direct Method
+
+The Full STI test signal can be generated using
+
+```matlab
+signal = generateStipaFullSTISignal(duration);
+```
+where `duration` specifies the duration of test signal in seconds. 
+
+If no sampling frequency is specified, the default value of 96&nbsp;kHz is used.
+To specify the sampling frequency, just call the function with the second parameter `fs` with the value of sampling frequency in Hz.
+The minimum sampling frequency is 22,050&nbsp;Hz.
+
+```matlab
+signal = generateFullSTISignal(duration, fs);
+```
+
+To insert silence gaps between each segment of the Full STI signal, use
+
+```matlab
+signal = generateFullSTISignal(duration, fs, 'silenceDuration', silenceduration);
+```
+
+where `silenceduration` specifies duration of the gaps in seconds.
+
+If you want to view the generater signal waveform, use 
+
+```matlab
+signal = generateFullSTISignal(duration, fs, 'doPlot', 1);
+```
+
+The generated test signal can be saved as audio file using the 
+[`audiowrite`](https://www.mathworks.com/help/matlab/ref/audiowrite.html)
+function, e.g.:
+
+```matlab
+audiowrite('./testSignal.wav', signal, fs);
+```
+
+Since Full STI evaluates the quality of speech transmission system based on the modulation depths of the measured signal, only the vector of measured `signal` and its sampling frequency `fs` is required to compute the STI value:
+
+```matlab
+STI = fullsti(signal, fs);
+```
+
+Note that the sampling frequency `fs` may differ from the sampling frequency of the generated STIPA test signal according to the recording device used.
+
+Apart from the STI, the `fullsti` function can also output the Modulation transfer ratios `mk`:
+
+```matlab
+[STI, mk] = fullsti(signal, fs);
+```
+
+In special cases, the `fullsti` function allows to input also `reference` signal and the Modulation Transfer values are computed as a ratio of `reference` and `signal` modulation depths:
+
+```matlab
+STI = fullsti(signal, fs, reference);
+```
+
+and it is also possible to specify sampling frequency of reference signal `fsRef` if it differs from the sampling frequency of the measured `signal`:
+
+```matlab
+STI = fullsti(signal, fs, reference, fsRef);
+```
+
+Two additional optional name-value arguments, `Lsk` and `Lnk`, can be provided to adjust the STI calculation for auditory masking and threshold effects, and ambient noise. 
+Both `Lsk` and `Lnk` should be vectors of length 7, representing the levels of signal and ambient noise in each frequency band, respectively.
+
+To adjust the Modulation Transfer Function (MTF) computation for auditory masking and threshold effects, use:
+```matlab
+STI = fullsti(signal, fs, 'Lsk', Lsk);
+```
+
+To also account for the effect of ambient noise, use:
+```matlab
+STI = fullsti(signal, fs, 'Lsk', Lsk, 'Lnk', Lnk);
+```
+
+By default, the `fullsti` function uses automatic Full STI signal detection using a threshold energy level. However, you can specify the start of the signal using
+
+```matlab
+STI = fullsti(signal, fs, 'SignalStart', signalstart);
+```
+
+Where `signalstart` specifies the start of test signal in the `signal` in seconds.
+
+By default, the `fullsti` function assumes a duration of one segment of the Full STI signal to be 10 seconds and a gap between segments to be 0 seconds. These intervals can be adjusted using
+
+```matlab
+STI = fullsti(signal, fs, 'SegmentDuration', segmentduration, 'SilenceDuration', silenceduration);
+```
+
+where `segmentduration` specifies the duration of one segment and `silenceduration` specifies duration of the gap between segments.
+
+If you want to view graphical output of the results and/or MTF matrix in a table, use
+
+```matlab
+STI = fullsti(signal, fs, 'doPlot', 1, 'doTable', 1);
+```
+
 **Performing a Full STI Measurement**: To use the full STI method:
 1. Use <code>generateFullSTISignal.m</code> to create the full STI test signal. By default, it may generate the standard 15-minute signal. You can specify parameters such as sampling rate or duration if needed.
 2. Play this signal through the system or environment under test (e.g., through a loudspeaker in a room). Make sure to record the output with a suitable microphone or recording device.
 3. Save the recorded audio (it should contain all 98 modulation combinations in sequence). Due to length, ensure no interruptions occur and the recording device can handle the duration.
 4. Use <code>fullsti.m</code> to analyze the recorded waveform. For example: <code>[STI_value, details] = fullsti('recordedFullSTI.wav', fs);</code> (where fs is the sampling rate). This will apply octave filtering, compute modulation transfer ratios for each frequency/modulation combination, and calculate the STI.
 5. Review the output. The function may return the overall STI and optionally a structure or matrix of modulation indices. You can use <code>displayPlotSTI.m</code> to visualize the full STI modulation matrix or <code>displayTableSTI.m</code> to see a summary of results.
+
+### Indirect Method
+
+The `sti_ir` function can be used to compute STI from system's impulse response using the indirect method. This toolbox also contains function to generate exponential sine sweep signal for the measurement along with its inverse filter according to swept-sine technique described by Farina [[3]](#3) and function to compute the impulse response by convolving the transmitted signal with an inverse test signal.
+
+The  exponential swept-sine signal along with its inverse filter can be generated using
+
+```matlab
+audiodata = IR_signal_exp_sweep(duration);
+```
+
+where `duration` specifies the duration of test signal in seconds and `audiodata' is Matlab structure containing
++ test signal (`audiodata.audio')
++ inverse filter (`audiodata.audio2')
++ sampling frequency (`audiodata.fs')
++ vecotr of input arguments, see below  (`audiodata.inarg')
++ IR scaling factor (`audiodata.IRscalingfactor')
+
+If start and end frequency of the generated swept-sine sinal is specified, the default values of 20&nbsp;Hz and 20&nbsp;kHz are used.
+Te specify start and end frequency, call the function with the second and third parameters `start_freq` and `end_freq` with the value of frequency in Hz.
+
+```matlab
+audiodata = IR_signal_exp_sweep(duration, start_freq, end_freq);
+```
+
+If no sampling frequency is specified, the default value of 96&nbsp;kHz is used.
+To specify the sampling frequency, just call the function with the fourth parameter `fs` with the value of sampling frequency in Hz.
+The minimum sampling frequency is 22,050&nbsp;Hz.
+
+```matlab
+audiodata = IR_signal_exp_sweep(duration, start_freq, end_freq, fs);
+```
+
+The function can also produce a descending swept-sine signal if the fifth parameter `reverse` is set to 1
+
+```matlab
+audiodata = IR_signal_exp_sweep(duration, start_freq, end_freq, fs, reverse);
+```
+
+To aply raised‐cosine fade‐in/fade‐out on the produced signal, use
+
+```matlab
+audiodata = IR_signal_exp_sweep(..., rcos_ms);
+```
+
+where `rcos_ms` is duration of the fade‐in and fade‐out in miliseconds.
+
+If you want to view the generater signal waveforms and spectrograms, use 
+
+```matlab
+audiodata = IR_signal_exp_sweep(..., 'doPlot', 1);
+```
+
+If you are going to measure the impulse response with another measuring instrument, but you need to generate a test signal, you can use the function `generateSweptSineSignal`
+
+```matlab
+signal = generateSweptSineSignal(duration);
+```
+where `duration` specifies the duration of test signal in seconds. This functiopn actually call the `IR_signal_exp_sweep` function and returns `audiodata.audio` as `signal`. Therefore all optional parameters are the same as for the `IR_signal_exp_sweep` function.
+
+The generated test signal can be saved as audio file using the 
+[`audiowrite`](https://www.mathworks.com/help/matlab/ref/audiowrite.html)
+function, e.g.:
+
+```matlab
+audiowrite('./testSignal.wav', signal, fs);
+```
+
+Since the indirect method evaluates computes the STI value from teh impulse response of the system, only the vector of measured impulse response `IR` and its sampling frequency `fs` is required to compute the STI value:
+
+```matlab
+STI = sti_ir(IR, fs);
+```
+
+Note that the sampling frequency `fs` may differ from the sampling frequency of the generated STIPA test signal according to the recording device used.
+
+Apart from the STI, the `sti_ir` function can also output the Modulation transfer ratios `mk` and STI value computed using the STIPA modulation frequencies:
+
+```matlab
+[STI, mk, STI_PA] = sti_ir(IR, fs);
+```
+
+Two additional optional name-value arguments, `Lsk` and `Lnk`, can be provided to adjust the STI calculation for auditory masking and threshold effects, and ambient noise. 
+Both `Lsk` and `Lnk` should be vectors of length 7, representing the levels of signal and ambient noise in each frequency band, respectively.
+
+To adjust the Modulation Transfer Function (MTF) computation for auditory masking and threshold effects, use:
+```matlab
+STI = sti_ir(IR, fs, 'Lsk', Lsk);
+```
+
+To also account for the effect of ambient noise, use:
+```matlab
+STI = sti_ir(IR, fs, 'Lsk', Lsk, 'Lnk', Lnk);
+```
+
+If you want to view graphical output of the results and/or MTF matrix in a table, use
+
+```matlab
+STI = sti_ir(IR, fs, 'doPlot', 1, 'doTable', 1);
+```
 
 **Using the Indirect IR Method**: If you have an impulse response of the system:
 1. Ensure the impulse response is available as a WAV or MATLAB array.
@@ -82,13 +365,13 @@ The repository is organized into MATLAB scripts, functions, and data files, with
 4. The result <code>STI_val</code> is the estimated speech transmission index. You can compare this with any direct measurement at the same position. The demonstration script <code>demonstration_sti_ir.m</code> can be used as a guide; it may automatically load one of the provided IRs and perform the above steps, then possibly compare the indirect STI to a STIPA result at that position.
 5. If you need to measure an IR yourself, you can use <code>IR_signal_exp_sweep.m</code> to generate a sweep signal, play it in the environment, record the response, then deconvolve (the script or repository might have instructions for deconvolving the recorded sweep to get the IR).
 
-**Calibration (Optional)**: If absolute accuracy is required (especially in presence of noise), use the calibration tone:
+### Calibration (Optional) 
+
+If absolute accuracy is required (especially in presence of noise), use the calibration tone:
 1. Play the <code>calibrator94dB.wav</code> file through your playback system with a standard 94 dB SPL calibrator (or use it to adjust your system output).
 2. Record it with the microphone in the measurement chain.
 3. Adjust your recording gain such that analyzing this recording yields ~94 dB SPL in the internal calculations. This might involve ensuring that the waveform amplitude corresponds to the calibration level expected by the STI algorithm (some STI calculations need the absolute speech and noise levels).
 4. Once calibrated, proceed with STI measurements. This step ensures that the “speech level” and “noise level” inputs to STI calculation are accurate in dB SPL, as required by the IEC standard. (If calibration is not performed, the STI computation will still work, but the results are relative – which is usually acceptable as long as the test signal playback level is within the standard’s specified range.)
-
-**General Notes**: All analysis functions output or plot results that align with the STI standard’s outputs. For example, you can expect the STI score and possibly intermediate measures like _Modulation Index (m)_ for each octave and modulation frequency, _MTF_(modulation transfer function values), and signal-to-noise ratios if noise is involved. The code is documented with comments to help understand the steps. If you wish to modify the code (e.g., to use different noise signals or to test only certain octave bands), the comments and modular structure will assist in making targeted changes.
 
 ## References
 <a id="1">[1]</a> 
@@ -96,5 +379,9 @@ International Electrotechnical Commission,“Sound system equipment – Part 16:
 
 <a id="2">[2]</a> 
 Záviška, P., Rajmic, P., Schimmel, J. _MATLAB Implementation of STIPA_. AES Europe Conference, 2024 – An open-source project implementing the STIPA method for speech intelligibility testing.
+
+<a id="3">[3]</a> 
+Farina, A. _Simultaneous Measurement of Impulse Response and Distortion With a Swept-Sine Technique_. AES Preprint, 2000.  [Available at: https://www.researchgate.net/publication/2456363_Simultahneous_Measurement_of_Impulse_Response_and_Distortion_With_a_Swept-Sine_Technique]
+
 
 &copy; Šimon Cieslar, Pavel Záviška, Jiří Schimmel, Pavel Rajmic, Brno University of Technology, 2023&ndash;2025
