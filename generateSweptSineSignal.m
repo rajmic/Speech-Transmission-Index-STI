@@ -1,4 +1,4 @@
-function sweptsine_signal = generateSweptSineSignal(duration, varargin)
+function signal = generateSweptSineSignal(duration, varargin)
 % GENERATESWEPTSINESIGNAL generates an exponential sine‐sweep test signal
 % using IR_SIGNAL_EXP_SWEEP function for impulse‐response measurement
 %
@@ -28,5 +28,5 @@ function sweptsine_signal = generateSweptSineSignal(duration, varargin)
 %
 
     audiodata = IR_signal_exp_sweep(duration, varargin{:});
-    sweptsine_signal = audiodata.audio;
+    signal = audiodata.audio;
 end

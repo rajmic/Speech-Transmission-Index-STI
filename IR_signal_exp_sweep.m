@@ -1,18 +1,18 @@
-function audiodata = IR_signal_exp_sweep(dur, varargin)
+function audiodata = IR_signal_exp_sweep(duration, varargin)
 % IR_SIGNAL_EXP_SWEEP generates an exponential sine‐sweep test signal and its
 % inverse filter for impulse‐response measurement using the swept‐sine method.
 %
-%   AUDIODATA = IR_SIGNAL_EXP_SWEEP(DUR) generates an exponential (logarithmic) 
+%   AUDIODATA = IR_SIGNAL_EXP_SWEEP(DURATION) generates an exponential (logarithmic) 
 %   sine sweep signal along with its inverse filter based on the specified 
-%   duration DUR (in seconds). The generated signals are intended for use 
-%   in impulse response measurements following the swept-sine technique 
+%   duration DURURATION (in seconds). The generated signals are intended for  
+%   use in impulse response measurements following the swept-sine technique 
 %   described by Farina (2000).
 %
-%   AUDIODATA = IR_SIGNAL_EXP_SWEEP(DUR, START_FREQ, END_FREQ) specifies the
+%   AUDIODATA = IR_SIGNAL_EXP_SWEEP(DURATION, START_FREQ, END_FREQ) specifies the
 %   sweep starting frequency (START_FREQ) and ending frequency (END_FREQ) in Hz
 %   (default: 20 Hz, 20000 Hz).
 %
-%   AUDIODATA = IR_SIGNAL_EXP_SWEEP(DUR, START_FREQ, END_FREQ, FS) sets the
+%   AUDIODATA = IR_SIGNAL_EXP_SWEEP(DURATION, START_FREQ, END_FREQ, FS) sets the
 %   sampling frequency FS in Hz (default: 96000 Hz).
 %
 %   AUDIODATA = IR_SIGNAL_EXP_SWEEP(..., REVERSE) when REVERSE = 1 produces
@@ -33,7 +33,7 @@ function audiodata = IR_signal_exp_sweep(dur, varargin)
 % Copyright Šimon Cieslar, Brno University of Technology, 2024-2025
 
 %% Parse Input Arguments
-[dur, start_freq, end_freq, fs, reverse, rcos_ms, doPlot] = parseInputs(dur, varargin{:});
+[duration, start_freq, end_freq, fs, reverse, rcos_ms, doPlot] = parseInputs(duration, varargin{:});
 
 %% Setup Basic Parameters
 SampleInterval = 1/fs;        % Sampling interval in seconds.
@@ -52,17 +52,17 @@ scale_inv      = 1;           % Enable allpass compensation.
 %     K = (T * ω1) / ln(ω2/ω1)
 %     L = ln(ω2/ω1) / T
 %
-% In the code, T is "dur" and the angular frequencies are computed as:
+% In the code, T is "duration" and the angular frequencies are computed as:
 w1 = 2 * pi * start_freq;  % Starting angular frequency (rad/s)
 w2 = 2 * pi * end_freq;    % Ending   angular frequency (rad/s)
 
 % Compute K and L (cf. Farina, 2000, p.6)
-K = (dur * w1) / log(w2 / w1);  
-L = log(w2 / w1) / dur;         
+K = (duration * w1) / log(w2 / w1);  
+L = log(w2 / w1) / duration;         
 
 % Create time vector for the signal duration.
-nSamples = dur / SampleInterval;
-t        = linspace(0, dur - SampleInterval, nSamples);
+nSamples = duration / SampleInterval;
+t        = linspace(0, duration - SampleInterval, nSamples);
 
 % Compute the phase function of the sweep signal.
 phi = K * (exp(t * L) - 1);  % Exponential phase function (Farina, 2000, p.6)
@@ -142,12 +142,12 @@ Sinv = Sinv * (targetRMS / rms(Sinv));
 audiodata.audio  = S.';
 audiodata.audio2 = Sinv.';
 audiodata.fs     = fs;
-audiodata.inarg  = {dur, start_freq, end_freq, fs, reverse, rcos_ms, doPlot};
+audiodata.inarg  = {duration, start_freq, end_freq, fs, reverse, rcos_ms, doPlot};
 audiodata.IRscalingfactor = IRscalingfactor;
 
 %% Optional Visualizationha
     if doPlot
-        titleStr = sprintf('ESS %ds %d–%dHz at %dHz', dur, start_freq, end_freq, fs);
+        titleStr = sprintf('ESS %ds %d–%dHz at %dHz', duration, start_freq, end_freq, fs);
         plotIRVisualization(audiodata, titleStr);
     end
 end

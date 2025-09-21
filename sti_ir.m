@@ -1,5 +1,5 @@
-function [STI, mk, STIPA_IR] = sti_ir(IR, fs, varargin)
-% STI_IR calculates the Speech Transmission Index (STI) from a room 
+function [STI, mk, STI_PA] = sti_ir(IR, fs, varargin)
+% STI_IR calculates the Speech Transmission Index (STI) from a system's 
 % impulse response (IR). The calculation follows the indirect (IR-based)
 % method as specified in the IEC 60268-16 (ed.3) standard.
 %
@@ -15,16 +15,16 @@ function [STI, mk, STIPA_IR] = sti_ir(IR, fs, varargin)
 %   Speech Transmission Index with adjustments of the MTF for ambient 
 %   noise, and auditory masking and threshold effects.
 %
-%   [STI, MK] = STI_IR(IR, FS, 'doPlot', DOPLOT) when 'doPlot' is set to 1
-%   (default), the function displays graphical output of the results.
+%   [STI, MK] = STI_IR(IR, FS, 'doPlot', DOPLOT) when 'doPlot' is set to 1,
+%   the function displays graphical output of the results.
 %   In this mode, the user is prompted to select an optional calibration
 %   reference signal (94 or 114 dB SPL) to compute absolute dB SPL levels.
 %   If the prompt is canceled, levels are shown relative to the input units.
-%   When doPlot is set to 0, the graphical output is suppressed.
+%   When doPlot is set to 0 (default), the graphical output is suppressed.
 %
 %   [STI, MK] = STI_IR(IR, FS, 'doTable', DOTABLE) displays 
-%   the MTF matrix in a table when DOTABLE is set to 1 (default). 
-%   If DOTABLE is set to 0, the table is not shown.
+%   the MTF matrix in a table when DOTABLE is set to 1 . 
+%   If DOTABLE is set to 0 (default), the table is not shown.
 %
 % The computation follows the IEC 60268‑16 specification for indirect
 % STI calculation from room impulse responses.
@@ -49,8 +49,8 @@ function [STI, mk, STIPA_IR] = sti_ir(IR, fs, varargin)
     addRequired(p, 'fs', validScalarPosNum);
     addParameter(p, 'Lsk', NaN, valid7PosVector);
     addParameter(p, 'Lnk', NaN, valid7PosVector);
-    addParameter(p, 'doTable', 1, validBinaryFlag);
-    addParameter(p, 'doPlot',  1, validBinaryFlag);
+    addParameter(p, 'doTable', 0, validBinaryFlag);
+    addParameter(p, 'doPlot',  0, validBinaryFlag);
     parse(p, IR, fs, varargin{:});
 
     % Definition of weighting and redundancy factors
@@ -213,12 +213,12 @@ fm_len = floor(fs.*fm_cycles ./ fm);
     % [ page 46 - A.2.1 - Annex A ]
     STI = computeSTI(MTI, alpha_k, beta_k);
 
-    STIPA_IR = sum(alpha_k .* MTI_STIPA) ...
+    STI_PA = sum(alpha_k .* MTI_STIPA) ...
           - sum(beta_k .* sqrt(MTI_STIPA(1:end-1) .* MTI_STIPA(2:end)));
 
     % Plot and table display
     if doTable == 1
-        displayTableSTI(mk, octaveBands, fm, MTI, STI, alpha_k, beta_k, STIPA_IR);
+        displayTableSTI(mk, octaveBands, fm, MTI, STI, alpha_k, beta_k, STI_PA);
     end
     if doPlot == 1
         % --- Optional calibration: prompt user to select reference signal ---

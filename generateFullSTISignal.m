@@ -17,8 +17,8 @@ function full_sti_signal = generateFullSTISignal(duration, varargin)
 %   of SILENCEDURATION seconds between each segment (default: 0 s).
 %
 %   FULL_STI_SIGNAL = GENERATEFULLSTISIGNAL(DURATION, FS, 'doPlot', DOPLOT)
-%   when DOPLOT = 1 (default) displays the signal waveform via plotSignalWaveform,
-%   and when DOPLOT = 0 suppresses plotting.
+%   when DOPLOT = 1 displays the signal waveform via plotSignalWaveform,
+%   and when DOPLOT = 0 (default) suppresses plotting.
 %
 % References:
 %   EN IEC 60268-16:2020 Sound system equipment — Part 16: Objective rating of speech
@@ -88,7 +88,7 @@ function [fs, silenceDuration, doPlot] = parseInputs(duration, varargin)
     defaultSilenceDuration = 0;
     addOptional(p, 'silenceDuration', defaultSilenceDuration, validSilenceDuration);
     
-    defaultDoPlot = 1;
+    defaultDoPlot = 0;
     addOptional(p, 'doPlot', defaultDoPlot, validPlotOption);
     
     parse(p, duration, varargin{:});

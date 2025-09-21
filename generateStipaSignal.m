@@ -13,8 +13,8 @@ function stipa_signal = generateStipaSignal(duration, varargin)
 %   The minimum FS is 22050 Hz.
 %
 %   STIPA_SIGNAL = GENERATESTIPASIGNAL(DURATION, FS, 'doPlot', DOPLOT)
-%   when DOPLOT = 1 (default) displays the signal waveform via plotSignalWaveform,
-%   and when DOPLOT = 0 suppresses plotting.
+%   when DOPLOT = 1 displays the signal waveform via plotSignalWaveform,
+%   and when DOPLOT = 0 (default) suppresses plotting.
 %
 % References:
 %   EN IEC 60268-16:2020 Sound system equipment — Part 16: Objective rating of speech
@@ -91,7 +91,7 @@ function [fs, doPlot] = parseInputs(duration, varargin)
     defaultFs = 96000;
     addOptional(p, 'fs', defaultFs, validSamplingFreq);
     
-    defaultDoPlot = 1;
+    defaultDoPlot = 0;
     addOptional(p, 'doPlot', defaultDoPlot, validPlotOption);
 
     parse(p, duration, varargin{:});

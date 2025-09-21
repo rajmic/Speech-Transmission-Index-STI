@@ -34,16 +34,16 @@
 %   If not provided, the start is automatically detected using an energy
 %   threshold.
 %
-%   [STI, MK] = STIPA(SIGNAL, FS, 'doPlot', DOPLOT) when 'doPlot' is set to 1
-%   (default), the function displays graphical output of the results.
+%   [STI, MK] = STIPA(SIGNAL, FS, 'doPlot', DOPLOT) when 'doPlot' is set 
+%   to 1, the function displays graphical output of the results.
 %   In this mode, the user is prompted to select an optional calibration
 %   reference signal (94 or 114 dB SPL) to compute absolute dB SPL levels.
 %   If the prompt is canceled, levels are shown relative to the input units.
-%   When doPlot is set to 0, the graphical output is suppressed.
+%   When doPlot is set to 0 (default), the graphical output is suppressed.
 %
 %   [STI, MK] = STIPA(SIGNAL, FS, 'doTable', DOTABLE) displays 
-%   the MTF matrix in a table when DOTABLE is set to 1 (default). 
-%   If DOTABLE is set to 0, the table is not shown.
+%   the MTF matrix in a table when DOTABLE is set to 1. 
+%   If DOTABLE is set to 0 (default), the table is not shown.
 %
 % Reference:
 %   EN IEC 60268-16:2020 Sound system equipment — Part 16: Objective rating of speech
@@ -69,8 +69,8 @@
     addOptional(p, 'fsRef', fs, validScalarPosNum);
     addParameter(p, 'Lsk', NaN, valid7PosVector);
     addParameter(p, 'Lnk', NaN, valid7PosVector);
-    addParameter(p, 'doPlot', 1, validBinaryFlag);
-    addParameter(p, 'doTable', 1, validBinaryFlag);
+    addParameter(p, 'doPlot', 0, validBinaryFlag);
+    addParameter(p, 'doTable', 0, validBinaryFlag);
     addParameter(p, 'SignalStart', NaN, validNonNegativeScalar);
     parse(p, signal, fs, varargin{:});
 
