@@ -1,5 +1,6 @@
-# Speech-Transmission-Index-STI
-Matlab implementation of STI (Full STI, STIPA, direct and indirect approaches, correction factors)
+# Speech Transmission Index (STI) in Matlab
+Routines for generating test signals and for computing Full STI, STIPA, direct and indirect approaches, including correction factors.
+The corresponding paper can be found [on arXiv](https://arxiv.org/pdf/2510.03825) and should be cited based on the following data:
 
 **Speech Transmission Index (STI)** ([STI](https://en.wikipedia.org/wiki/Speech_transmission_index))
 is a metric ranging between 0 and 1 predicting the speech intelligibility when speech is passed through a transmission channel, defined in the [IEC&nbsp;60268-16](https://webstore.iec.ch/publication/26771) standard [[1]](#1). It is based on an analysis of the amplitude modulations, which simulate speech signals.
